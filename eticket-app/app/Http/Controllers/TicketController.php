@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
     public function index()
     {
-        // Mengambil tiket hanya milik user yang sedang login
-        $tickets = Ticket::where('user_id', Auth::id())->latest()->get();
+        $user = Auth::user();
+        // Admin melihat semua, User melihat miliknya sendiri
+        if (strtolower(trim($user->role)) === 'admin') {
+            $tickets = Ticket::with('user')->latest()->get();
+        } else {
+            $tickets = Ticket::where('user_id', $user->id)->latest()->get();
+        }
         return view('tickets.index', compact('tickets'));
     }
 
+    // TAMBAHKAN METHOD INI AGAR ERROR "Undefined Method" HILANG
     public function create()
     {
         return view('tickets.create');
@@ -23,12 +29,12 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi: 'priority' dibuat nullable agar tidak menghambat pengiriman form
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required',
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'instansi'    => 'required|string', 
+            'category'    => 'required',
             'description' => 'required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:10000',
         ]);
 
         $imagePath = null;
@@ -36,15 +42,23 @@ class TicketController extends Controller
             $imagePath = $request->file('image')->store('tickets', 'public');
         }
 
-        Ticket::create([
-            'title'       => $request->title,
-            'category'    => $request->category,
-            'description' => $request->description,
-            'image'       => $imagePath,
-            'status'      => 'waiting',
-            'priority'    => $request->priority ?? 'low', // Default ke 'low' jika form kosong
+        $ticket = Ticket::create([
+            'ticket_number' => 'TCK-' . strtoupper(Str::random(6)), 
+            'user_id'       => Auth::id(), 
+            'title'         => $validated['title'],
+            'instansi'      => $validated['instansi'],
+            'category'      => $validated['category'],
+            'description'   => $validated['description'],
+            'image'         => $imagePath,
+            'status'        => 'waiting',
+            'priority'      => $request->priority ?? 'low',
         ]);
 
-        return redirect()->route('tickets.index')->with('success', 'Laporan Anda berhasil dikirim!');
+        // Debug kalau mau
+        // dd('SAMPAI SINI', $ticket);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Laporan berhasil terkirim!');
     }
+
 }

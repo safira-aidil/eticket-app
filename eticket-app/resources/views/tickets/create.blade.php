@@ -2,9 +2,8 @@
     <x-slot name="header">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <style>
-            /* Integrasi Select2 dengan Desain Premium Indigo */
             .select2-container--default .select2-selection--single {
-                background-color: #f8fafc !important; /* slate-50 */
+                background-color: #f8fafc !important;
                 border: 2px solid #f1f5f9 !important;
                 border-radius: 1.25rem !important;
                 height: 64px !important;
@@ -30,15 +29,7 @@
                 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important;
                 padding: 0.5rem !important;
             }
-            .select2-search__field {
-                border-radius: 0.75rem !important;
-                padding: 0.75rem !important;
-            }
-
-            /* Custom Animation untuk Form */
-            .form-fade-in {
-                animation: slideUp 0.7s ease-out;
-            }
+            .form-fade-in { animation: slideUp 0.7s ease-out; }
             @keyframes slideUp {
                 from { opacity: 0; transform: translateY(30px); }
                 to { opacity: 1; transform: translateY(0); }
@@ -62,8 +53,18 @@
 
     <div class="py-12 bg-slate-50 min-h-screen">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 form-fade-in">
+            
+            @if ($errors->any())
+                <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-2xl shadow-sm">
+                    <ul class="text-sm text-red-700 font-bold">
+                        @foreach ($errors->all() as $error)
+                            <li>⚠️ {{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="bg-white shadow-[0_40px_80px_-15px_rgba(79,70,229,0.1)] rounded-[3rem] overflow-hidden border border-slate-100">
-                
                 <div class="h-2 w-full bg-slate-50 flex">
                     <div class="h-full bg-indigo-600 w-1/3 shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
                 </div>
@@ -72,31 +73,23 @@
                     <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data" class="space-y-10">
                         @csrf
 
-                        <div class="relative">
+                        <div>
                             <label for="title" class="block text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4 ml-2">Subjek / Unit Kerja</label>
-                            <input type="text" name="title" id="title" 
+                            <input type="text" name="title" id="title" value="{{ old('title') }}"
                                 class="w-full px-8 py-5 bg-slate-50 border-2 border-slate-50 rounded-[1.5rem] focus:ring-0 focus:border-indigo-500 focus:bg-white transition-all duration-300 font-bold text-slate-800 placeholder-slate-300 shadow-sm text-lg"
                                 placeholder="Misal: Bidang IKP - PC Tidak Bisa Booting" required>
                         </div>
 
                         <div>
-                            <label for="opd" class="block text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4 ml-2">Instansi / Perangkat Daerah</label>
-                            <select name="opd" id="opd" class="w-full" required>
+                            <label for="instansi" class="block text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4 ml-2">Instansi / Perangkat Daerah</label>
+                            <select name="instansi" id="instansi" class="w-full" required>
                                 <option value=""></option> 
-                                <option>Inspektur Kota Binjai</option>
-                                <option>Kepala Dinas Pendidikan Kota Binjai</option>
-                                <option>Kepala Dinas Kesehatan Kota Binjai</option>
-                                <option>Kepala Dinas Pekerjaan Umum dan Tata Ruang Kota Binjai</option>
-                                <option>Kepala Dinas Perumahan dan Kawasan Permukiman Kota Binjai</option>
-                                <option>Kepala Dinas Sosial Kota Binjai</option>
-                                <option>Kepala Dinas Komunikasi dan Informatika Kota Binjai</option>
-                                <option>Direktur RSUD Dr. R. M. Djoelham Kota Binjai</option>
-                                <option>Camat Binjai Utara</option>
-                                <option>Camat Binjai Timur</option>
-                                <option>Camat Binjai Barat</option>
-                                <option>Camat Binjai Kota</option>
-                                <option>Camat Binjai Selatan</option>
-                            </select>
+                                <option {{ old('instansi') == 'Inspektur Kota Binjai' ? 'selected' : '' }}>Inspektur Kota Binjai</option>
+                                <option {{ old('instansi') == 'Kepala Dinas Pendidikan Kota Binjai' ? 'selected' : '' }}>Kepala Dinas Pendidikan Kota Binjai</option>
+                                <option {{ old('instansi') == 'Kepala Dinas Kesehatan Kota Binjai' ? 'selected' : '' }}>Kepala Dinas Kesehatan Kota Binjai</option>
+                                <option {{ old('instansi') == 'Kepala Dinas Komunikasi dan Informatika Kota Binjai' ? 'selected' : '' }}>Kepala Dinas Komunikasi dan Informatika Kota Binjai</option>
+                                <option {{ old('instansi') == 'Camat Binjai Kota' ? 'selected' : '' }}>Camat Binjai Kota</option>
+                                </select>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -133,7 +126,7 @@
                             <label for="description" class="block text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4 ml-2">Deskripsi Detail Keluhan</label>
                             <textarea name="description" id="description" rows="5" 
                                 class="w-full px-8 py-6 bg-slate-50 border-2 border-slate-50 rounded-[2rem] focus:ring-0 focus:border-indigo-500 focus:bg-white transition-all duration-300 font-bold text-slate-800 placeholder-slate-300 shadow-sm"
-                                placeholder="Jelaskan secara rinci permasalahan teknis yang Anda alami agar teknisi kami dapat membantu dengan cepat..." required></textarea>
+                                placeholder="Jelaskan secara rinci permasalahan teknis yang Anda alami..." required>{{ old('description') }}</textarea>
                         </div>
 
                         <div class="pt-6">
@@ -146,15 +139,6 @@
                     </form>
                 </div>
             </div>
-
-            <div class="mt-12 text-center">
-                <div class="inline-flex items-center space-x-3 px-6 py-3 bg-white rounded-full border border-slate-100 shadow-sm">
-                    <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">
-                        Sistem Terenkripsi & Terpantau 24/7 • DISKOMINFO BINJAI
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -163,19 +147,21 @@
     
     <script>
         $(document).ready(function() {
-            // Inisialisasi Select2 dengan Placeholder yang lebih bersih
-            $('#opd').select2({
+            // Select2 menggunakan ID instansi
+            $('#instansi').select2({
                 placeholder: "CARI INSTANSI ANDA...",
                 allowClear: true
             });
 
-            // Handler Upload Image yang lebih interaktif
+            // File Upload Listener
             document.getElementById('image').onchange = function () {
-                let fileName = this.files[0].name;
-                let fileLabel = document.getElementById('file-label');
-                fileLabel.innerHTML = "✅ " + fileName;
-                fileLabel.classList.remove('text-indigo-700');
-                fileLabel.classList.add('text-emerald-600');
+                if(this.files.length > 0) {
+                    let fileName = this.files[0].name;
+                    let fileLabel = document.getElementById('file-label');
+                    fileLabel.innerHTML = "✅ " + fileName;
+                    fileLabel.classList.remove('text-indigo-700');
+                    fileLabel.classList.add('text-emerald-600');
+                }
             };
         });
     </script>
