@@ -10,18 +10,15 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    
+    // --- DASHBOARD LOGIC ---
     Route::get('/dashboard', function () {
         $user = Auth::user();
-        
-        // Memastikan role terbaca benar (lowercase)
         $role = strtolower(trim($user->role));
 
         if ($role === 'admin') {
-            // JIKA ADMIN (Safira): Ambil SEMUA tiket dari database
             $tickets = Ticket::with('user')->latest()->get();
             $isAdmin = true;
-
-            // Statistik Global untuk Admin
             $stats = [
                 'total'   => Ticket::count(),
                 'waiting' => Ticket::where('status', 'waiting')->count(),
@@ -29,11 +26,8 @@ Route::middleware(['auth'])->group(function () {
                 'done'    => Ticket::where('status', 'done')->count(),
             ];
         } else {
-            // JIKA USER (Kirana/Rara/Suci): Hanya ambil miliknya sendiri
             $tickets = Ticket::where('user_id', $user->id)->latest()->get();
             $isAdmin = false;
-
-            // Statistik Personal untuk User
             $stats = [
                 'total'   => $tickets->count(),
                 'waiting' => $tickets->where('status', 'waiting')->count(),
@@ -45,7 +39,19 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard', compact('tickets', 'isAdmin', 'stats'));
     })->name('dashboard');
 
+    // --- TICKET ROUTES ---
+    
+    // 1. Menggunakan Resource (Otomatis mencakup index, create, store, edit, update, show)
     Route::resource('tickets', TicketController::class);
+
+    // 2. Route tambahan untuk filter "Tiket Saya"
+    Route::get('/my-tickets', [TicketController::class, 'myTickets'])->name('my.tickets');
+
+    // 3. Route khusus aksi Admin
+    Route::patch('/tickets/{ticket}/status', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+    // Note: Route::delete sudah dicover oleh Route::resource di atas, 
+    // tapi tidak apa-apa jika ingin ditulis spesifik di bawahnya.
+    Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
 });
 
 require __DIR__.'/auth.php';

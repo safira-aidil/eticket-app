@@ -61,4 +61,35 @@ class TicketController extends Controller
             ->with('success', 'Laporan berhasil terkirim!');
     }
 
+    /**
+     * Update Status Tiket (Hanya untuk Admin)
+     */
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        if (auth()->user()->role !== 'admin') { 
+            abort(403); 
+        }
+
+        $request->validate([
+            'status' => 'required|in:waiting,process,done',
+        ]);
+
+        $ticket->update(['status' => $request->status]);
+
+        return back()->with('success', 'Status Tiket #' . $ticket->ticket_number . ' Berhasil diperbarui!');
+    }
+
+    /**
+     * Hapus Tiket (Hanya untuk Admin)
+     */
+    public function destroy(Ticket $ticket)
+    {
+        if (auth()->user()->role !== 'admin') { 
+            abort(403); 
+        }
+
+        $ticket->delete();
+
+        return back()->with('success', 'Laporan Berhasil dihapus secara permanen!');
+    }
 }

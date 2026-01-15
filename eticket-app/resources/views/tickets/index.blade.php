@@ -1,143 +1,87 @@
 <x-app-layout>
-    <style>
-        /* Container Zoom & Animation */
-        .zoom-container {
-            transform: scale(1.01);
-            transform-origin: top left;
-            animation: fadeIn 0.6s ease-out;
-        }
+    <x-slot name="header">
+        <div class="flex items-center justify-between">
+            <h2 class="font-extrabold text-2xl text-gray-900 leading-tight">
+                {{ __('Panel Manajemen Admin (Semua Laporan)') }}
+            </h2>
+            <div class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold uppercase">
+                Total: {{ $tickets->count() }} Laporan
+            </div>
+        </div>
+    </x-slot>
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Card Style */
-        .main-card {
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
-            border: 1px solid #f1f5f9;
-            overflow: hidden;
-        }
-
-        /* Status Badges Premium */
-        .badge-waiting { background: #fffbeb; color: #9a3412; border: 1px solid #fef3c7; }
-        .badge-process { background: #eff6ff; color: #1e40af; border: 1px solid #dbeafe; }
-        .badge-success { background: #f0fdf4; color: #166534; border: 1px solid #dcfce7; }
-    </style>
-
-    <div class="zoom-container py-8">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-                <div>
-                    <h2 class="text-4xl font-black text-slate-900 tracking-tighter italic uppercase leading-none mb-2">
-                        {{ __('Daftar Laporan') }}
-                    </h2>
-                    <p class="text-slate-400 font-bold text-sm tracking-tight">Manajemen dan pemantauan status tiket secara real-time.</p>
+            @if(session('success'))
+                <div class="mb-6 p-4 bg-emerald-500 text-white rounded-2xl shadow-lg font-bold text-sm flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {{ session('success') }}
                 </div>
-                
-                <a href="{{ route('tickets.create') }}" class="flex items-center gap-3 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-[0.15em] hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-200 transition-all active:scale-95">
-                    <span>➕</span> Buat Laporan Baru
-                </a>
-            </div>
+            @endif
 
-            <div class="main-card">
-                <div class="px-8 py-6 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Data Monitoring Tiket</h3>
-                    <div class="flex gap-2">
-                        <div class="w-2 h-2 rounded-full bg-amber-400"></div>
-                        <div class="w-2 h-2 rounded-full bg-blue-400"></div>
-                        <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-separate border-spacing-0">
-                        <thead>
-                            <tr>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Info Tiket</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Kategori</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 text-center">Lampiran</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">Status</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-50">
-                            @forelse($tickets as $ticket)
-                            <tr class="hover:bg-slate-50/80 transition-all group">
-                                <td class="px-8 py-6">
-                                    <div class="flex flex-col">
-                                        <span class="text-[10px] font-black text-indigo-500 tracking-widest mb-1 uppercase">#{{ $ticket->ticket_number }}</span>
-                                        <span class="font-bold text-slate-800 text-base tracking-tight group-hover:text-indigo-600 transition-colors">{{ $ticket->title }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-6">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-1.5 h-1.5 bg-slate-300 rounded-full"></div>
-                                        <span class="font-bold text-slate-500 text-xs uppercase tracking-tighter">{{ $ticket->category }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-6">
-                                    <div class="flex justify-center">
-                                        @if($ticket->image)
-                                            <a href="{{ asset('storage/' . $ticket->image) }}" target="_blank" class="block group/img">
-                                                <img src="{{ asset('storage/' . $ticket->image) }}" class="w-14 h-14 object-cover rounded-2xl shadow-sm border-2 border-white group-hover/img:scale-110 group-hover/img:shadow-lg transition-all duration-300">
-                                            </a>
-                                        @else
-                                            <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center border border-dashed border-slate-200">
-                                                <span class="text-[18px]">📷</span>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="px-8 py-6">
-                                    @php
-                                        // Normalisasi status agar tidak error jika database pakai huruf besar/kecil berbeda
-                                        $status = strtolower($ticket->status);
-                                        $statusClass = 'badge-waiting';
-                                        
-                                        if($status == 'processing' || $status == 'diproses') $statusClass = 'badge-process';
-                                        if($status == 'success' || $status == 'selesai') $statusClass = 'badge-success';
-                                    @endphp
-                                    <span class="px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest {{ $statusClass }}">
-                                        {{ $ticket->status }}
-                                    </span>
-                                </td>
-                                <td class="px-8 py-6 text-right">
-                                    <a href="#" class="inline-flex items-center justify-center w-10 h-10 bg-white border border-slate-200 text-slate-400 rounded-xl hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all shadow-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="5" class="px-8 py-24 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-6xl mb-4">📭</span>
-                                        <p class="text-slate-400 font-black uppercase tracking-[0.2em] text-sm">Belum ada laporan yang terdaftar.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-                {{-- Bagian ini hanya akan muncul jika kamu menggunakan ->paginate() di Controller --}}
-                @if(method_exists($tickets, 'hasPages') && $tickets->hasPages())
-                <div class="px-8 py-6 bg-slate-50/30 border-t border-slate-100">
-                    {{ $tickets->links() }}
-                </div>
-                @endif
-            </div>
-
-            <div class="mt-8 flex items-center justify-center gap-2">
-                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Secure System Encrypted by Diskominfo Binjai</p>
+            <div class="bg-white shadow-xl rounded-[2rem] overflow-hidden border border-gray-100">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100">
+                            <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">User & Judul</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Lampiran</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Kelola Status</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Opsi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50">
+                        @forelse($tickets as $ticket)
+                        <tr class="hover:bg-indigo-50/30 transition group">
+                            <td class="px-6 py-5">
+                                <p class="text-[10px] text-indigo-500 font-bold mb-1 uppercase">#{{ $ticket->ticket_number }} | {{ $ticket->user->name ?? 'User' }}</p>
+                                <p class="font-bold text-gray-800">{{ $ticket->title }}</p>
+                                <p class="text-xs text-gray-400 truncate w-64 italic">"{{ $ticket->description }}"</p>
+                            </td>
+                            <td class="px-6 py-5 text-center">
+                                <div class="flex justify-center">
+                                    @if($ticket->image)
+                                        <a href="{{ asset('storage/' . $ticket->image) }}" target="_blank">
+                                            <img src="{{ asset('storage/' . $ticket->image) }}" class="w-12 h-12 object-cover rounded-xl shadow-sm border border-gray-200 hover:scale-110 transition">
+                                        </a>
+                                    @else
+                                        <span class="text-gray-300 italic text-[10px]">No Image</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <form action="{{ route('tickets.updateStatus', $ticket->id) }}" method="POST" class="flex items-center justify-center space-x-2">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="status" class="text-[10px] font-bold border-gray-200 rounded-lg bg-gray-50 focus:ring-indigo-500">
+                                        <option value="waiting" {{ $ticket->status == 'waiting' ? 'selected' : '' }}>WAITING</option>
+                                        <option value="process" {{ $ticket->status == 'process' ? 'selected' : '' }}>PROCESS</option>
+                                        <option value="done" {{ $ticket->status == 'done' ? 'selected' : '' }}>DONE</option>
+                                    </select>
+                                    <button type="submit" class="p-2 bg-indigo-700 text-white rounded-lg hover:bg-indigo-800 transition shadow-md" title="Update Status">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="px-6 py-5 text-right">
+                                <form action="{{ route('tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus laporan ini secara permanen?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="p-2 text-gray-400 hover:text-red-600 transition" title="Hapus Laporan">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="px-6 py-20 text-center">
+                                <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">Belum ada laporan masuk.</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

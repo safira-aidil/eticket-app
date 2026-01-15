@@ -29,16 +29,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- PERBAIKAN: Mengganti $latestTickets menjadi $tickets sesuai kiriman dari Route --}}
                         @foreach($tickets as $ticket)
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="py-3 px-2">{{ $ticket->ticket_number }}</td>
-                            {{-- Menggunakan optional ?? agar tidak error jika user kosong --}}
-                            @if($isAdmin) <td class="py-3 px-2 font-bold">{{ $ticket->user->name ?? 'User N/A' }}</td> @endif
-                            <td class="py-3 px-2 uppercase">{{ $ticket->instansi }}</td>
+                            <td class="py-3 px-2 font-mono text-sm">{{ $ticket->ticket_number }}</td>
+                            @if($isAdmin) 
+                                <td class="py-3 px-2 font-bold">{{ $ticket->user->name ?? 'User N/A' }}</td> 
+                            @endif
+                            <td class="py-3 px-2 uppercase text-xs font-semibold">{{ $ticket->instansi }}</td>
                             <td class="py-3 px-2">{{ $ticket->title }}</td>
                             <td class="py-3 px-2">
-                                <span class="px-2 py-1 text-xs rounded font-bold {{ $ticket->status == 'waiting' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700' }}">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold 
+                                    {{ $ticket->status == 'done' ? 'bg-green-100 text-green-700' : '' }}
+                                    {{ $ticket->status == 'process' ? 'bg-blue-100 text-blue-700' : '' }}
+                                    {{ $ticket->status == 'waiting' ? 'bg-yellow-100 text-yellow-700' : '' }}">
                                     {{ strtoupper($ticket->status) }}
                                 </span>
                             </td>
@@ -46,6 +49,12 @@
                         @endforeach
                     </tbody>
                 </table>
+                
+                @if($tickets->isEmpty())
+                    <div class="text-center py-10">
+                        <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">Belum ada data laporan.</p>
+                    </div>
+                @endif
             </div>
 
         </div>
