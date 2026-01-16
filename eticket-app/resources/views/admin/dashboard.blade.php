@@ -23,7 +23,8 @@
                 <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.02)]">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Total Masuk</p>
                     <div class="flex items-baseline gap-2">
-                        <h3 class="text-5xl font-black text-slate-900 leading-none">{{ $total }}</h3>
+                        {{-- PERBAIKAN: Menggunakan $stats['total'] --}}
+                        <h3 class="text-5xl font-black text-slate-900 leading-none">{{ $stats['total'] }}</h3>
                         <span class="text-xs font-bold text-slate-400">Tiket</span>
                     </div>
                 </div>
@@ -31,7 +32,8 @@
                 <div class="bg-indigo-600 p-8 rounded-[2.5rem] shadow-[0_20px_40px_rgba(79,70,229,0.2)]">
                     <p class="text-[10px] font-black text-indigo-200 uppercase tracking-widest mb-4">Menunggu</p>
                     <div class="flex items-baseline gap-2 text-white">
-                        <h3 class="text-5xl font-black leading-none">{{ $waiting }}</h3>
+                        {{-- PERBAIKAN: Menggunakan $stats['waiting'] --}}
+                        <h3 class="text-5xl font-black leading-none">{{ $stats['waiting'] }}</h3>
                         <span class="text-xs font-bold opacity-80 italic">Urgent</span>
                     </div>
                 </div>
@@ -39,7 +41,8 @@
                 <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Resolved</p>
                     <div class="flex items-baseline gap-2">
-                        <h3 class="text-5xl font-black text-emerald-500 leading-none">{{ $done }}</h3>
+                        {{-- PERBAIKAN: Menggunakan $stats['done'] --}}
+                        <h3 class="text-5xl font-black text-emerald-500 leading-none">{{ $stats['done'] }}</h3>
                         <span class="text-xs font-bold text-slate-400">Selesai</span>
                     </div>
                 </div>
@@ -47,7 +50,8 @@
                 <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">User Aktif</p>
                     <div class="flex items-baseline gap-2">
-                        <h3 class="text-5xl font-black text-slate-900 leading-none">{{ $totalUser }}</h3>
+                        {{-- PERBAIKAN: Menggunakan count user --}}
+                        <h3 class="text-5xl font-black text-slate-900 leading-none">{{ \App\Models\User::count() }}</h3>
                         <span class="text-xs font-bold text-slate-400">Instansi</span>
                     </div>
                 </div>
@@ -73,7 +77,8 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50">
-                            @forelse($latestTickets as $ticket)
+                            {{-- PERBAIKAN: Menggunakan $tickets (dari controller yang kita buat tadi) --}}
+                            @forelse($tickets as $ticket)
                             <tr class="hover:bg-indigo-50/30 transition group">
                                 <td class="px-10 py-6">
                                     <div class="flex flex-col">
