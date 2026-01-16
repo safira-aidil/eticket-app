@@ -25,6 +25,17 @@
                         <span class="flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             {{ __('KELOLA TIKET MASUK') }}
+
+                            {{-- PERBAIKAN: Mengambil data jumlah tiket WAITING secara otomatis --}}
+                            @php
+                                $waitingCount = \App\Models\Ticket::where('status', 'waiting')->count();
+                            @endphp
+
+                            @if($waitingCount > 0)
+                                <span class="ms-2 px-2 py-0.5 text-[10px] font-black bg-red-600 text-white rounded-full shadow-sm">
+                                    {{ $waitingCount }}
+                                </span>
+                            @endif
                         </span>
                     </x-nav-link>
                     @endif
@@ -77,8 +88,11 @@
 
             @if(Auth::user()->role === 'admin')
             <div class="border-t border-gray-100 my-1"></div>
-            <x-responsive-nav-link :href="route('admin.tickets.index')" :active="request()->routeIs('admin.tickets.*')" class="text-red-600 font-bold bg-red-50">
+            <x-responsive-nav-link :href="route('admin.tickets.index')" :active="request()->routeIs('admin.tickets.*')" class="text-red-600 font-bold bg-red-50 flex justify-between items-center">
                 {{ __('KELOLA TIKET MASUK') }}
+                @if($waitingCount > 0)
+                    <span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">{{ $waitingCount }}</span>
+                @endif
             </x-responsive-nav-link>
             @endif
             
@@ -87,7 +101,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault(); this.closest('form').submit();" class="text-red-600 font-bold">
+                    onclick="event.preventDefault(); this.closest('form').submit();" class="text-red-600 font-bold">
                     {{ __('Logout (Keluar)') }}
                 </x-responsive-nav-link>
             </form>

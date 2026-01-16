@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+{
+    // Ini akan mengirimkan data 'waitingCount' ke semua file blade (termasuk sidebar)
+    view()->share('waitingCount', \App\Models\Ticket::where('status', 'waiting')->count());
+}
         // Pastikan database tidak error saat migrasi (opsional tapi bagus untuk berjaga-jaga)
         Schema::defaultStringLength(191);
 

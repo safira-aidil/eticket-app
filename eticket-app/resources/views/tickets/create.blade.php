@@ -84,11 +84,48 @@
                             <label for="instansi" class="block text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-4 ml-2">Instansi / Perangkat Daerah</label>
                             <select name="instansi" id="instansi" class="w-full" required>
                                 <option value=""></option> 
-                                <option {{ old('instansi') == 'Inspektur Kota Binjai' ? 'selected' : '' }}>Inspektur Kota Binjai</option>
-                                <option {{ old('instansi') == 'Kepala Dinas Pendidikan Kota Binjai' ? 'selected' : '' }}>Kepala Dinas Pendidikan Kota Binjai</option>
-                                <option {{ old('instansi') == 'Kepala Dinas Kesehatan Kota Binjai' ? 'selected' : '' }}>Kepala Dinas Kesehatan Kota Binjai</option>
-                                <option {{ old('instansi') == 'Kepala Dinas Komunikasi dan Informatika Kota Binjai' ? 'selected' : '' }}>Kepala Dinas Komunikasi dan Informatika Kota Binjai</option>
-                                <option {{ old('instansi') == 'Camat Binjai Kota' ? 'selected' : '' }}>Camat Binjai Kota</option>
+                                <option value="">CARI INSTANSI ANDA...</option>
+                                    <option value="Inspektur Kota Binjai">Inspektur Kota Binjai</option>
+                                    <option value="Kepala Dinas Pendidikan Kota Binjai">Kepala Dinas Pendidikan Kota Binjai</option>
+                                    <option value="Kepala Dinas Kesehatan Kota Binjai">Kepala Dinas Kesehatan Kota Binjai</option>
+                                    <option value="Kepala Dinas Pekerjaan Umum dan Tata Ruang Kota Binjai">Kepala Dinas Pekerjaan Umum dan Tata Ruang Kota Binjai</option>
+                                    <option value="Kepala Dinas Perumahan dan Kawasan Permukiman Kota Binjai">Kepala Dinas Perumahan dan Kawasan Permukiman Kota Binjai</option>
+                                    <option value="Kepala Dinas Sosial Kota Binjai">Kepala Dinas Sosial Kota Binjai</option>
+                                    <option value="Kepala Dinas Ketenagakerjaan, Perindustrian dan Perdagangan Kota Binjai">Kepala Dinas Ketenagakerjaan, Perindustrian dan Perdagangan Kota Binjai</option>
+                                    <option value="Kepala Dinas Pemberdayaan Perempuan, Perlindungan Anak dan Masyarakat Kota Binjai">Kepala Dinas Pemberdayaan Perempuan, Perlindungan Anak dan Masyarakat Kota Binjai</option>
+                                    <option value="Kepala Dinas Ketahanan Pangan dan Pertanian Kota Binjai">Kepala Dinas Ketahanan Pangan dan Pertanian Kota Binjai</option>
+                                    <option value="Kepala Dinas Lingkungan Hidup Kota Binjai">Kepala Dinas Lingkungan Hidup Kota Binjai</option>
+                                    <option value="Kepala Dinas Kependudukan dan Pencatatan Sipil Kota Binjai">Kepala Dinas Kependudukan dan Pencatatan Sipil Kota Binjai</option>
+                                    <option value="Kepala Dinas Pengendalian Penduduk dan KB Kota Binjai">Kepala Dinas Pengendalian Penduduk dan KB Kota Binjai</option>
+                                    <option value="Kepala Dinas Perhubungan Kota Binjai">Kepala Dinas Perhubungan Kota Binjai</option>
+                                    <option value="Kepala Dinas Komunikasi dan Informatika Kota Binjai">Kepala Dinas Komunikasi dan Informatika Kota Binjai</option>
+                                    <option value="Kepala Dinas Koperasi, Usaha Kecil dan Menengah Kota Binjai">Kepala Dinas Koperasi, Usaha Kecil dan Menengah Kota Binjai</option>
+                                    <option value="Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Binjai">Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kota Binjai</option>
+                                    <option value="Kepala Dinas Pemuda dan Keolahragaan Kota Binjai">Kepala Dinas Pemuda dan Keolahragaan Kota Binjai</option>
+                                    <option value="Kepala Dinas Pariwisata Kota Binjai">Kepala Dinas Pariwisata Kota Binjai</option>
+                                    <option value="Kepala Dinas Perpustakaan Kota Binjai">Kepala Dinas Perpustakaan Kota Binjai</option>
+                                    <option value="Kepala Badan Penanggulangan Bencana Daerah Kota Binjai">Kepala Badan Penanggulangan Bencana Daerah Kota Binjai</option>
+                                    <option value="Kepala Badan Perencanaan Pembangunan, Riset dan Inovasi Daerah Kota Binjai">Kepala Badan Perencanaan Pembangunan, Riset dan Inovasi Daerah Kota Binjai</option>
+                                    <option value="Kepala Badan Pengelolaan Keuangan dan Pendapatan Daerah Kota Binjai">Kepala Badan Pengelolaan Keuangan dan Pendapatan Daerah Kota Binjai</option>
+                                    <option value="Kepala Badan Kepegawaian dan Pengembangan Sumber Daya Manusia Kota Binjai">Kepala Badan Kepegawaian dan Pengembangan Sumber Daya Manusia Kota Binjai</option>
+                                    <option value="Kepala Badan Kesatuan Bangsa dan Politik Kota Binjai">Kepala Badan Kesatuan Bangsa dan Politik Kota Binjai</option>
+                                    <option value="Kepala Satuan Polisi Pamong Praja (Satpol-PP) Kota Binjai">Kepala Satuan Polisi Pamong Praja (Satpol-PP) Kota Binjai</option>
+                                    <option value="Direktur RSUD Dr. R. M. Djoelham Kota Binjai">Direktur RSUD Dr. R. M. Djoelham Kota Binjai</option>
+                                    <option value="Sekretaris DPRD Kota Binjai">Sekretaris DPRD Kota Binjai</option>
+                                    <option value="Kepala Bagian Pemerintahan Sekretariat Daerah Kota Binjai">Kepala Bagian Pemerintahan Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Administrasi Pembangunan Sekretariat Daerah Kota Binjai">Kepala Bagian Administrasi Pembangunan Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Pengadaan Barang dan Jasa Sekretariat Daerah Kota Binjai">Kepala Bagian Pengadaan Barang dan Jasa Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Protokol dan Komunikasi Pimpinan Daerah Sekretariat Daerah Kota Binjai">Kepala Bagian Protokol dan Komunikasi Pimpinan Daerah Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Organisasi Sekretariat Daerah Kota Binjai">Kepala Bagian Organisasi Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Hukum Sekretariat Daerah Kota Binjai">Kepala Bagian Hukum Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Kesejahteraan Rakyat Sekretariat Daerah Kota Binjai">Kepala Bagian Kesejahteraan Rakyat Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Umum Sekretariat Daerah Kota Binjai">Kepala Bagian Umum Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Kepala Bagian Perekonomian dan Sumber Daya Alam Sekretariat Daerah Kota Binjai">Kepala Bagian Perekonomian dan Sumber Daya Alam Sekretariat Daerah Kota Binjai</option>
+                                    <option value="Camat Binjai Utara">Camat Binjai Utara</option>
+                                    <option value="Camat Binjai Timur">Camat Binjai Timur</option>
+                                    <option value="Camat Binjai Barat">Camat Binjai Barat</option>
+                                    <option value="Camat Binjai Kota">Camat Binjai Kota</option>
+                                    <option value="Camat Binjai Selatan">Camat Binjai Selatan</option>
                                 </select>
                         </div>
 

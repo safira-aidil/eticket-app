@@ -7,6 +7,7 @@
     <title>E-Ticket Binjai | DISKOMINFO Premium</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
@@ -170,7 +171,10 @@
                 <a href="/tickets" class="nav-link {{ request()->is('tickets') ? 'active' : '' }}">
                     <span class="text-xl">🎫</span>
                     <span>Semua Tiket Masuk</span>
-                    <span class="badge">5</span>
+                    {{-- Perbaikan: Angka menjadi otomatis sesuai jumlah database --}}
+                    <span class="badge animate-pulse">
+                        {{ \App\Models\Ticket::count() }}
+                    </span>
                 </a>
             @endif
 

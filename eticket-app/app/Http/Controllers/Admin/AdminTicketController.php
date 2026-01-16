@@ -11,18 +11,20 @@ class AdminTicketController extends Controller
     // --- TAMBAHKAN METHOD INI ---
     public function dashboard()
     {
-        $stats = [
-            'total' => Ticket::count(),
-            'waiting' => Ticket::where('status', 'waiting')->count(),
-            'process' => Ticket::where('status', 'process')->count(),
-            'done' => Ticket::where('status', 'done')->count(),
-        ];
+       $stats = [
+        'total' => Ticket::count(),
+        'waiting' => Ticket::where('status', 'waiting')->count(),
+        'process' => Ticket::where('status', 'process')->count(),
+        'done' => Ticket::where('status', 'done')->count(),
+    ];
 
-        // Mengambil tiket terbaru untuk ditampilkan di dashboard
-        $tickets = Ticket::with('user')->latest()->get();
-        $isAdmin = true;
+    // Variabel khusus untuk angka di sidebar
+    $waitingCount = $stats['waiting'];
 
-        return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin'));
+    $tickets = Ticket::with('user')->latest()->get();
+    $isAdmin = true;
+
+    return view('admin.dashboard', compact('tickets', 'stats', 'isAdmin', 'waitingCount'));
     }
     // ----------------------------
 
